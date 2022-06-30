@@ -1,11 +1,15 @@
 const express=require('express');
-const app=express();
 const expressLayouts=require('express-ejs-layouts');
 const mongoose=require('mongoose');
 const dotenv=require('dotenv');
 const bodyParser=require('body-parser');
 const flash=require('connect-flash')
 const session=require('express-session');
+const passport = require('passport');
+
+const app=express();
+
+require('./config/passport')(passport);
 
 //body parser
 app.use(bodyParser.urlencoded({extended:false}));
@@ -20,6 +24,10 @@ app.use(session({
 //dotenv configuration
 dotenv.config();
 
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Connect flash
 app.use(flash());
 
@@ -30,19 +38,9 @@ app.use((req,res,next) => {
     next();
 })
 
+//
+
 const db=process.env.DB_CONNECT_URI;
-
-// //connect to mongoDB
-
-// try{
-//     const connection=mongoose.connect(db,{
-//         useNewUrlParser:true
-//     });
-//     console.log("Connected mongooooose");
-// }catch(err)
-// {
-//     console.error('Error: '+err);
-// }
 
 mongoose.connect(db,{useNewUrlParser:true});
 mongoose.connection.once('open',()=>{
