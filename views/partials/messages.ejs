@@ -34,3 +34,16 @@
       <%
       }
       %>
+
+      <%
+      if(error != ''){
+      %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <%= error %>
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+          <span area-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%
+      }
+      %>
